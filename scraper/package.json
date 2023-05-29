@@ -1,0 +1,20 @@
+{
+  "name": "scraper",
+  "version": "1.0.0",
+  "description": "Puppeteer scraper for EduConnect job scraper service",
+  "main": "index.js",
+  "scripts": {
+    "start": "ts-node-dev --poll src/index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Slickerius",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "puppeteer": "19.5.0 "
+  },
+  "devDependencies": {
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.0.4"
+  }
+}
