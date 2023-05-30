@@ -86,3 +86,90 @@ export async function retrieveAll(req, res) {
     });
   }
 };
+
+export async function retreiveById(req, res) {
+  try {
+    const userId = req.params.id;
+
+    const user = await User.findOne({where: {id:userId}});
+
+    if(!user) {
+      return res.status(404).json({
+        message: 'User not found'
+      })
+    }
+
+    return res.status(200).json({
+      user
+    })
+
+  } catch(e) {
+    console.log(e);
+
+    return res.status(500).send({
+      message:'Internal server error'
+    })
+  }
+}
+
+export async function updateUser(req, res) {
+  try {
+    const userId = req.params.id;
+    const userData = req.body;
+
+    const user = await User.findOne({where: {id:userId}});
+
+    if(!user) {
+      return res.status(404).json({
+        message: 'User not found'
+      })
+    }
+
+    user.name = userData.name;
+    user.email = userData.email;
+
+    await user.save();
+
+    return res.status(200).json({
+      message: "User updated successfully",
+      user
+    });
+
+
+  } catch(e) {
+    console.log(e)
+
+    return res.status(500).send({
+      message: "Internal server error"
+    });
+  }
+}
+
+export async function deleteUser(req, res) {
+  try {
+    const userId = req.params.id;
+
+    const user = await User.findOne({where: {id:userId}});
+
+    if(!user) {
+      return res.status(404).json({
+        message: 'User not found'
+      })
+    }
+    // Delete the user
+    await user.destroy();
+
+    return res.status(200).json({
+      message: "User deleted successfully",
+    });
+
+
+  } catch(e) {
+    console.log(e)
+
+    return res.status(500).send({
+      message: "Internal server error"
+    });
+  }
+}
+
