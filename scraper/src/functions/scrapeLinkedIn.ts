@@ -35,7 +35,6 @@ const scrapeLinkedIn = async(iter: number, browser: any, config: Config, linkedI
   
   await page.waitForNavigation();
   await page.waitForTimeout(1000);
-  await page.waitForTimeout(20000);
 
   return await scrapeLinkedInIter(iter, page, config);
 };

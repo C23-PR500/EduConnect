@@ -29,9 +29,11 @@ const init = (async() => {
 
 const scrape = async(browser: any, config: Config) => {
   let outputStr = `job name,job level,company name,city,area,country,skills\n`;
-  outputStr += await scrapeLinkedIn(0, browser, config, process.env.LINKEDIN_USERNAME as string, process.env.LINKEDIN_PASSWORD as string);
+  for (let i = 0; i < 2; i++) {
+    outputStr += await scrapeLinkedIn(i, browser, config, process.env.LINKEDIN_USERNAME as string, process.env.LINKEDIN_PASSWORD as string);
+  }
 
-  fs.writeFileSync(`tutor-ex.csv`, outputStr);
+  fs.writeFileSync(`mentor.csv`, outputStr);
 };
 
 init();

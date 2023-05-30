@@ -1,8 +1,6 @@
-import log from './logger.js';
-
-const logRequest = (req, res, next) => {
-  log(`Request logged at ${req.originalUrl}`);
-  next();
+const logRequest = (req,res,next) => {
+    console.log('log terjadi req ke PATH', req.path);
+    next();
 }
 
-export default logRequest;
+module.exports = logRequest;
