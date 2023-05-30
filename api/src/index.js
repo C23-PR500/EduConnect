@@ -24,5 +24,5 @@ const init = (async () => {
 
   app.listen(PORT, () => {console.log(`Example app listening on port ${PORT}!`)});
 
-  await db.sequelize.sync();
+  await db.sequelize.sync({ force: true });
 })();

@@ -1,5 +1,11 @@
 export default (sequelize, Sequelize) => {
   const User = sequelize.define("user", {
+    id : {
+      type: Sequelize.BIGINT,
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+    },
     email: {
       type: Sequelize.STRING,
       allowNull: false,
