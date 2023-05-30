@@ -1,9 +1,7 @@
 {
   "urls": {
     "linkedin": [
-      "https://www.linkedin.com/jobs/search/?keywords=mentor",
-      "https://www.linkedin.com/jobs/search/?keywords=mentor&start=25",
-      "https://www.linkedin.com/jobs/search/?keywords=mentor&start=50"
+      "https://www.linkedin.com/jobs/search/?keywords=tutor"
     ]
   },
   "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36"

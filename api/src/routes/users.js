@@ -1,19 +1,17 @@
-const express = require('express');
+import { Router } from 'express';
+import verifyToken from '../middleware/auth.js';
 
-const UserController = require('../controller/users.js')
+import { 
+  create as createUser,
+  authenticate as authenticateUser,
+  retrieveAll as retrieveAllUsers,
+} from '../controllers/user.controller.js';
 
-const router = express.Router();
+const router = Router({ mergeParams: true });
 
-// CREATE - POST
-router.get('/', UserController.getAllUsers);
+router.post('/register', createUser);
+router.post('/login', authenticateUser);
 
-// READ - GET
-router.post('/', UserController.createNewUser);
+router.get('', verifyToken, retrieveAllUsers);
 
-// UPDATE - PATCH
-router.patch('/:id', UserController.updateUser);
-
-// DELETE - DELETE
-router.delete('/:id', UserController.deleteUser);
-
-module.exports = router;
+export default router;
