@@ -1,6 +1,6 @@
 export default (sequelize, Sequelize) => {
   const Job = sequelize.define("job", {
-    id : {
+    id: {
       type: Sequelize.BIGINT,
       allowNull: false,
       autoIncrement: true,

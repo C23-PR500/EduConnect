@@ -53,8 +53,11 @@ export async function authenticate(req, res) {
 
     if (user && (await bcrypt.compare(password, user.password))) {
       return res.status(200).json({
+          id: user.id,
+          email: user.email,
+          name: user.name,
           token: jwt.sign(
-            { email: email },
+            { id: user.id, email: user.email },
             process.env.TOKEN_KEY, 
             { expiresIn: "8h" }
           )
@@ -75,7 +78,6 @@ export async function authenticate(req, res) {
 
 export async function retrieveAll(req, res) {
   try {
-    console.log(req.user);
     return res.status(200).json({
         users: await User.findAll()
     });
@@ -91,8 +93,9 @@ export async function retrieveAll(req, res) {
 export async function retreiveById(req, res) {
   try {
     const userId = req.params.id;
+    console.log(`reqUser ${req.user.id}`);
 
-    const user = await User.findOne({where: {id:userId}});
+    const user = await User.findOne({ where: { id: userId } });
 
     if(!user) {
       return res.status(404).json({
@@ -100,12 +103,10 @@ export async function retreiveById(req, res) {
       })
     }
 
-    return res.status(200).json({
-      user
-    })
+    return res.status(200).json({ user });
 
   } catch(e) {
-    console.log(e);
+    log(e);
 
     return res.status(500).send({
       message:'Internal server error'
@@ -113,17 +114,17 @@ export async function retreiveById(req, res) {
   }
 }
 
-export async function updateUser(req, res) {
+export async function updateById(req, res) {
   try {
     const userId = req.params.id;
     const userData = req.body;
 
-    const user = await User.findOne({where: {id:userId}});
+    const user = await User.findOne( { where: { id:userId } });
 
-    if(!user) {
+    if (!user) {
       return res.status(404).json({
         message: 'User not found'
-      })
+      });
     }
 
     user.name = userData.name;
@@ -135,10 +136,8 @@ export async function updateUser(req, res) {
       message: "User updated successfully",
       user
     });
-
-
   } catch(e) {
-    console.log(e)
+    log(e);
 
     return res.status(500).send({
       message: "Internal server error"
@@ -146,17 +145,18 @@ export async function updateUser(req, res) {
   }
 }
 
-export async function deleteUser(req, res) {
+export async function deleteById(req, res) {
   try {
     const userId = req.params.id;
 
-    const user = await User.findOne({where: {id:userId}});
+    const user = await User.findOne( { where: { id:userId } });
 
-    if(!user) {
+    if (!user) {
       return res.status(404).json({
         message: 'User not found'
-      })
+      });
     }
+
     // Delete the user
     await user.destroy();
 
@@ -166,7 +166,7 @@ export async function deleteUser(req, res) {
 
 
   } catch(e) {
-    console.log(e)
+    log(e);
 
     return res.status(500).send({
       message: "Internal server error"
