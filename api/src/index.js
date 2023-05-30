@@ -1,14 +1,28 @@
-require('dotenv').config()
-const express = require('express')
-const PORT = process.env.PORT || 5000; 
-const app = express()
-const UserRoutes = require('./routes/users.js')
-const middlewareLogRequest = require('./middleware/log.js')
-// get the client
+import { config } from 'dotenv';
+import express, { json } from 'express';
+import UserRoutes from './routes/users.js';
+import middlewareLogRequest from './middleware/log.js';
+import db from './models/db.js';
 
-app.use(middlewareLogRequest) 
-app.use(express.json());
+const init = (async () => {
+  config();
 
-app.use('/users',UserRoutes);
+  const PORT = process.env.PORT || 5000; 
+  const app = express();
+  const router = express.Router();
 
-app.listen(PORT, () => {console.log(`Example app listening on port ${PORT}!`)} )
+  app.use(json());
+
+  const apiRouter = express.Router();
+
+  apiRouter.use(middlewareLogRequest); 
+  apiRouter.use('/users', UserRoutes);
+  
+  router.use('/api/v1', apiRouter);
+
+  app.use(router);
+
+  app.listen(PORT, () => {console.log(`Example app listening on port ${PORT}!`)});
+
+  await db.sequelize.sync();
+})();
