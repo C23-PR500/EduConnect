@@ -1,6 +1,6 @@
 export default (sequelize, Sequelize) => {
   const User = sequelize.define("user", {
-    id : {
+    id: {
       type: Sequelize.BIGINT,
       allowNull: false,
       autoIncrement: true,
