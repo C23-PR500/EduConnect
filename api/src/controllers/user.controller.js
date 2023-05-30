@@ -75,6 +75,7 @@ export async function authenticate(req, res) {
 
 export async function retrieveAll(req, res) {
   try {
+    console.log(req.user);
     return res.status(200).json({
         users: await User.findAll()
     });
