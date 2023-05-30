@@ -1,7 +1,7 @@
 import { config } from 'dotenv';
 import express, { json } from 'express';
 import UserRoutes from './routes/users.js';
-import middlewareLogRequest from './middleware/log.js';
+import logRequestMiddleware from './middleware/log.js';
 import db from './models/db.js';
 
 const init = (async () => {
@@ -15,7 +15,7 @@ const init = (async () => {
 
   const apiRouter = express.Router();
 
-  apiRouter.use(middlewareLogRequest); 
+  apiRouter.use(logRequestMiddleware); 
   apiRouter.use('/users', UserRoutes);
   
   router.use('/api/v1', apiRouter);
