@@ -37,5 +37,5 @@ const init = (async () => {
   console.log('Database synchronised.');
 
   await generateSkillData(db.skills);
-  await generateJobData(db.jobs);
+  await generateJobData(db.jobs, db.skills);
 })();

@@ -6,5 +6,7 @@ export default async (Skill) => {
     { name: 'Communication' },
     { name: 'Education' },
     { name: 'Administration' },
+    { name: 'Problem Solving' },
+    { name: 'Leadership' },
   ]);
 };
