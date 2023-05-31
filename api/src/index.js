@@ -1,9 +1,11 @@
 import { config } from 'dotenv';
 import express, { json } from 'express';
 import UserRoutes from './routes/users.js';
+import JobRoutes from './routes/jobs.js';
 import SkillRoutes from './routes/skills.js';
 import logRequestMiddleware from './middleware/log.js';
 import db from './models/db.js';
+import generateJobData from './data/job.data.js';
 import generateSkillData from './data/skill.data.js';
 
 const init = (async () => {
@@ -20,6 +22,7 @@ const init = (async () => {
 
   apiRouter.use(logRequestMiddleware); 
   apiRouter.use('/users', UserRoutes);
+  apiRouter.use('/jobs', JobRoutes);
   apiRouter.use('/skills', SkillRoutes);
   
   router.use('/api/v1', apiRouter);
@@ -34,4 +37,5 @@ const init = (async () => {
   console.log('Database synchronised.');
 
   await generateSkillData(db.skills);
+  await generateJobData(db.jobs);
 })();
