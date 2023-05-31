@@ -5,7 +5,7 @@ import {
   create as createUser,
   authenticate as authenticateUser,
   retrieveAll as retrieveAllUsers,
-  retreiveById as retrieveUserById,
+  retrieveById as retrieveUserById,
   updateById as updateUserById,
   deleteById as deleteUserById,
 } from '../controllers/user.controller.js';

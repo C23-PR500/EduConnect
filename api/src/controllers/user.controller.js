@@ -90,10 +90,9 @@ export async function retrieveAll(req, res) {
   }
 };
 
-export async function retreiveById(req, res) {
+export async function retrieveById(req, res) {
   try {
     const userId = req.params.id;
-    console.log(`reqUser ${req.user.id}`);
 
     const user = await User.findOne({ where: { id: userId } });
 

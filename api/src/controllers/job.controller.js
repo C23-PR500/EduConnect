@@ -29,4 +29,36 @@ export async function retrieveAll(req, res) {
   }
 };
 
+export async function retrieveById(req, res) {
+  try {
+    const jobId = req.params.id;
 
+    const job = await Job.findOne({ 
+      where: { 
+        id: jobId 
+      },
+      include: [
+        {
+          model: Skill,
+          as: 'skills',
+          through: { attributes: [] }, 
+        },
+      ],
+    });
+
+    if(!job) {
+      return res.status(404).json({
+        message: 'Job not found'
+      });
+    }
+
+    return res.status(200).json({ job });
+
+  } catch(e) {
+    log(e);
+
+    return res.status(500).send({
+      message:'Internal server error'
+    })
+  }
+};
