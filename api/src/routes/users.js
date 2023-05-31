@@ -8,6 +8,8 @@ import {
   retreiveById,
   updateUser,
   deleteUser,
+  followUser,
+  getFollowedUsers,
 } from '../controllers/user.controller.js';
 
 const router = Router({ mergeParams: true });
@@ -19,5 +21,9 @@ router.get('', verifyToken, retrieveAllUsers);
 router.get('/:id', verifyToken, retreiveById);
 router.patch('/:id', verifyToken, updateUser);
 router.delete('/:id', verifyToken, deleteUser);
+
+router.post('/:id/following/:targetUserId/follow',verifyToken, followUser);
+router.get('/:id/following',verifyToken, getFollowedUsers);
+
 
 export default router;
