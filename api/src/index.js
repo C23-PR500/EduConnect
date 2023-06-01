@@ -38,4 +38,5 @@ const init = (async () => {
 
   await generateSkillData(db.skills);
   await generateJobData(db.jobs, db.skills);
+
 })();
