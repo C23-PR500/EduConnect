@@ -133,7 +133,7 @@ export async function updateById(req, res) {
       })
 
      // Validate the user data
-     if (!userData.name || !userData.email || !userData.profession || !userData.city || !userData.area || !userData.country) {
+     if (!userData.name || !userData.email || !userData.profession || !userData.city || !userData.area || !userData.country || !userData.longitude || !userData.latitude || !userData.password) {
       return res.status(400).json({
         message: "Name, email are required"
       });
@@ -141,10 +141,10 @@ export async function updateById(req, res) {
 
     user.name = userData.name;
     user.email = userData.email;
-    // user.password = userData.password;
+    user.password = userData.password;
     user.profession = userData.profession;
-    // user.latitude = userData.latitude;
-    // user.longitude = userData.longitude;
+    user.latitude = userData.latitude;
+    user.longitude = userData.longitude;
     user.city = userData.city;
     user.area = userData.area;
     user.country = userData.country;
