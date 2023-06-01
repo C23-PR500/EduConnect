@@ -88,7 +88,7 @@ export async function retrieveAll(req, res) {
   }
 };
 
-export async function retreiveById(req, res) {
+export async function retrieveById(req, res) {
   try {
     const userId = req.params.id;
 
@@ -113,7 +113,7 @@ export async function retreiveById(req, res) {
   }
 }
 
-export async function updateUser(req, res) {
+export async function updateById(req, res) {
   try {
     const userId = req.params.id;
     const userData = req.body;
@@ -166,7 +166,7 @@ export async function updateUser(req, res) {
   }
 }
 
-export async function deleteUser(req, res) {
+export async function deleteById(req, res) {
   try {
     const userId = req.params.id;
 
@@ -195,7 +195,7 @@ export async function deleteUser(req, res) {
   }
 }
 
-export async function followUser(req, res) {
+export async function followById(req, res) {
   try {
     const userId = req.params.id; // Assuming the current user's ID is passed as a URL parameter
     const targetUserId = req.params.targetUserId; // Assuming the target user's ID is passed as a URL parameter
@@ -234,7 +234,7 @@ export async function followUser(req, res) {
 };
 
 
-export async function getFollowedUsers(req, res) {
+export async function getFollowedUsersById(req, res) {
   try {
     const userId = req.params.id; // Assuming the user's ID is passed as a URL parameter
 
