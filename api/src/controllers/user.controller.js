@@ -116,12 +116,13 @@ export async function retrieveById(req, res) {
 export async function updateById(req, res) {
   try {
     const userId = req.params.id;
-    const userData = req.body;
 
-    // if (userId !== req.user.id)
-    //   return res.status(401).send({
-    //     message: 'Unauthorized'
-    //   });
+    if (userId !== req.user.id)
+      return res.status(401).send({
+        message: 'Unauthorized'
+      });
+
+    const userData = req.body;
 
     const user = await User.findOne({where: {id:userId}});
 
@@ -170,6 +171,11 @@ export async function deleteById(req, res) {
   try {
     const userId = req.params.id;
 
+    if (userId !== req.user.id)
+      return res.status(401).send({
+        message: 'Unauthorized'
+      });
+
     const user = await User.findOne({where: {id:userId}});
 
     if(!user) {
@@ -198,6 +204,12 @@ export async function deleteById(req, res) {
 export async function followById(req, res) {
   try {
     const userId = req.params.id; // Assuming the current user's ID is passed as a URL parameter
+
+    if (userId !== req.user.id)
+      return res.status(401).send({
+        message: 'Unauthorized'
+      });
+    
     const targetUserId = req.params.targetUserId; // Assuming the target user's ID is passed as a URL parameter
 
     const currentUser = await User.findByPk(userId); // Assuming there is a model or function to retrieve a user by ID
