@@ -54,7 +54,7 @@ export async function authenticate(req, res) {
     if (user && (await bcrypt.compare(password, user.password))) {
       return res.status(200).json({
           token: jwt.sign(
-            { email: email },
+            { id: user.id, email: user.email },
             process.env.TOKEN_KEY, 
             { expiresIn: "8h" }
           )
