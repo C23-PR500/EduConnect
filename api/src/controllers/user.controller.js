@@ -7,6 +7,7 @@ import { config } from 'dotenv';
 
 const Op = Sequelize.Op;
 const User = db.users;
+const Job = db.jobs;
 const sequelize = db.sequelize;
 
 config();
@@ -117,14 +118,14 @@ export async function updateById(req, res) {
   try {
     const userId = req.params.id;
 
-    if (userId !== req.user.id)
+    if (userId != req.user.id)
       return res.status(401).send({
         message: 'Unauthorized'
       });
 
     const userData = req.body;
 
-    const user = await User.findOne({where: {id:userId}});
+    const user = await User.findByPk(userId);
 
     if (!user)
       return res.status(404).json({
@@ -171,7 +172,7 @@ export async function deleteById(req, res) {
   try {
     const userId = req.params.id;
 
-    if (userId !== req.user.id)
+    if (userId != req.user.id)
       return res.status(401).send({
         message: 'Unauthorized'
       });
@@ -205,7 +206,7 @@ export async function followById(req, res) {
   try {
     const userId = req.params.id; // Assuming the current user's ID is passed as a URL parameter
 
-    if (userId !== req.user.id)
+    if (userId != req.user.id)
       return res.status(401).send({
         message: 'Unauthorized'
       });
@@ -245,7 +246,6 @@ export async function followById(req, res) {
   }
 };
 
-
 export async function getFollowedUsersById(req, res) {
   try {
     const userId = req.params.id; // Assuming the user's ID is passed as a URL parameter
@@ -275,6 +275,50 @@ export async function getFollowedUsersById(req, res) {
     return res.status(200).json({
       followedUsers
     });
+  } catch (e) {
+    console.log(e);
+
+    return res.status(500).send({
+      message: "Internal server error"
+    });
+  }
+};
+
+export async function applyToJobById(req, res) {
+  try {
+    const userId = req.params.id; // Assuming the current user's ID is passed as a URL parameter
+
+    if (userId != req.user.id)
+      return res.status(401).send({
+        message: 'Unauthorized'
+      });
+    
+    const jobId = req.params.jobId; // Assuming the target user's ID is passed as a URL parameter
+
+    const user = await User.findByPk(userId); // Assuming there is a model or function to retrieve a user by ID
+    const job = await Job.findByPk(jobId); // Assuming there is a model or function to retrieve a user by ID
+   
+    if (!user || !job) {
+      return res.status(404).json({
+        message: "Invalid user or job ID provided"
+      });
+    }
+
+    const isAlreadyApplied = await user.hasJobApplications(job);
+
+    if (isAlreadyApplied) {
+      return res.status(400).json({
+        message: "User has already applied to the provided job."
+      });
+    }
+
+    await user.addJobApplications(job);
+
+    return res.status(200).json({
+      message: "Successfully applied user successfully followed to job",
+      user: user,
+    });
+
   } catch (e) {
     console.log(e);
 
