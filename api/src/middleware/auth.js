@@ -18,7 +18,7 @@ const verifyToken = async (req, res, next) => {
   try {
     const decoded = jwt.verify(jwtToken, process.env.TOKEN_KEY);
 
-    const user = await User.findOne({ where: { email: decoded.email } });
+    const user = await User.findOne({ where: { id: decoded.id, email: decoded.email } });
 
     if (!user)
       return res.status(401).send("Invalid Token");

@@ -1,6 +1,6 @@
 export default (sequelize, Sequelize) => {
   const Skill = sequelize.define("skill", {
-    id : {
+    id: {
       type: Sequelize.BIGINT,
       allowNull: false,
       autoIncrement: true,

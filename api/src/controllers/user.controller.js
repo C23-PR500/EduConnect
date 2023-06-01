@@ -265,4 +265,3 @@ export async function getFollowedUsers(req, res) {
     });
   }
 };
-
