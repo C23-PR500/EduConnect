@@ -30,13 +30,13 @@ db.skills = Skill(sequelize, Sequelize);
 // Connections relationship
 db.users.belongsToMany(db.users, {
   through: "connections",
-  as: "followerLinks",
+  as: "followingLinks",
   foreignKey: "follower_id",
 });
 
 db.users.belongsToMany(db.users, {
   through: "connections",
-  as: "followingLinks",
+  as: "followerLinks",
   foreignKey: "following_id",
 });
 

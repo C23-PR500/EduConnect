@@ -109,7 +109,7 @@ export async function retreiveById(req, res) {
 
     return res.status(500).send({
       message:'Internal server error'
-    })
+    });
   }
 }
 
@@ -118,13 +118,17 @@ export async function updateUser(req, res) {
     const userId = req.params.id;
     const userData = req.body;
 
+    // if (userId !== req.user.id)
+    //   return res.status(401).send({
+    //     message: 'Unauthorized'
+    //   });
+
     const user = await User.findOne({where: {id:userId}});
 
-    if(!user) {
+    if (!user)
       return res.status(404).json({
         message: 'User not found'
       })
-    }
 
      // Validate the user data
      if (!userData.name || !userData.email || !userData.profession || !userData.city || !userData.area || !userData.country) {
@@ -173,6 +177,7 @@ export async function deleteUser(req, res) {
         message: 'User not found'
       })
     }
+
     // Delete the user
     await user.destroy();
 
@@ -192,39 +197,33 @@ export async function deleteUser(req, res) {
 
 export async function followUser(req, res) {
   try {
-    const following = [];
     const userId = req.params.id; // Assuming the current user's ID is passed as a URL parameter
     const targetUserId = req.params.targetUserId; // Assuming the target user's ID is passed as a URL parameter
 
-    const currentUser = await User.findOne({where: {id:userId}}); // Assuming there is a model or function to retrieve a user by ID
-    const targetUser = await User.findOne({where: {id:targetUserId}}); // Assuming there is a model or function to retrieve a user by ID
+    const currentUser = await User.findByPk(userId); // Assuming there is a model or function to retrieve a user by ID
+    const targetUser = await User.findByPk(targetUserId); // Assuming there is a model or function to retrieve a user by ID
    
-    if (!currentUser || !targetUser) {
+    if (!currentUser || !targetUser || userId === targetUserId) {
       return res.status(404).json({
-        message: "User not found"
+        message: "Invalid user ID provided"
       });
     }
 
-    // Check if the current user is already following the target user
-    const isAlreadyFollowing = currentUser.following && currentUser.following.includes(targetUserId);
+    const isAlreadyFollowing = await currentUser.hasFollowingLinks(targetUser);
+
     if (isAlreadyFollowing) {
       return res.status(400).json({
         message: "User is already following the target user"
       });
     }
 
-    // Add the target user to the current user's following list
-    currentUser.following = currentUser.following || []; // Initialize following as an empty array if it's undefined
-    currentUser.following.push(targetUserId);
-    await currentUser.save();
-
-    console.log('following',currentUser.following.includes(targetUserId))
-    
+    await currentUser.addFollowingLinks(targetUser);
 
     return res.status(200).json({
       message: "User successfully followed",
       user: currentUser,
     });
+
   } catch (e) {
     console.log(e);
 
@@ -239,7 +238,15 @@ export async function getFollowedUsers(req, res) {
   try {
     const userId = req.params.id; // Assuming the user's ID is passed as a URL parameter
 
-    const user = await User.findByPk(userId, { include: 'following' });
+    const user = await User.findByPk(userId, { 
+      include: [
+        {
+          model: User,
+          as: 'followingLinks',
+          through: { attributes: [] }, 
+        },
+      ]
+    });
 
     if (!user) {
       return res.status(404).json({
@@ -247,12 +254,11 @@ export async function getFollowedUsers(req, res) {
       });
     }
 
-    const followedUsers = user.following.map(follow => ({
+    const followedUsers = user.followingLinks.map(follow => ({
       id: follow.id,
       name: follow.name,
       // Include other desired fields
     }));
-    
 
     return res.status(200).json({
       followedUsers
