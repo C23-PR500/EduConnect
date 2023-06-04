@@ -152,6 +152,16 @@ export async function updateById(req, res) {
 
     await user.save();
 
+     // Update user skills
+     if (userData.skills && Array.isArray(userData.skills)) {
+      // Remove existing user skills
+      await user.setSkills([]);
+
+      // Add new user skills
+      await user.addSkills(userData.skills);
+    }
+
+
     return res.status(200).json({
       message: "User updated successfully",
       user
