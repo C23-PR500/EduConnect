@@ -9,6 +9,7 @@ const Op = Sequelize.Op;
 const User = db.users;
 const Job = db.jobs;
 const sequelize = db.sequelize;
+const Skill = db.skills;
 
 config();
 
@@ -315,6 +316,83 @@ export async function applyToJobById(req, res) {
     return res.status(200).json({
       message: "Successfully applied user successfully followed to job",
       user: user,
+    });
+
+  } catch (e) {
+    console.log(e);
+
+    return res.status(500).send({
+      message: "Internal server error"
+    });
+  }
+};
+
+export async function getSkillUser(req, res) {
+  try {
+    const userId = req.params.id;
+
+    if (userId != req.user.id)
+      return res.status(401).send({
+        message: 'Unauthorized'
+      });
+
+    const skill = await Skill.findOne({
+      where: {
+        id:userId
+      },
+        include: [
+          {
+            model: Skill,
+            as: 'skills',
+            through: { attributes: []}
+          }
+        ]
+    })
+
+    return res.status(200).json({ skill })
+  } catch(e) {
+    log(e);
+
+    return res.status(500).send({
+      message:'internal server error'
+    })
+  }
+}
+
+
+export async function unfollowById(req, res) {
+  try {
+    const userId = req.params.id; // Assuming the current user's ID is passed as a URL parameter
+
+    if (userId != req.user.id)  
+      return res.status(401).send({
+        message: 'Unauthorized'
+      });
+    console.log(User)
+    const targetUserId = req.params.targetUserId; // Assuming the target user's ID is passed as a URL parameter
+
+    const currentUser = await User.findByPk(userId); // Assuming there is a model or function to retrieve a user by ID
+    const targetUser = await User.findByPk(targetUserId); // Assuming there is a model or function to retrieve a user by ID
+   
+    if (!currentUser || !targetUser || userId === targetUserId) {
+      return res.status(404).json({
+        message: "Invalid user ID provided"
+      });
+    }
+
+    const isFollowing = await currentUser.hasFollowingLinks(targetUser);
+
+    if (!isFollowing) {
+      return res.status(400).json({
+        message: "User is not following the target user"
+      });
+    }
+
+    await currentUser.removeFollowingLinks(targetUser);
+
+    return res.status(200).json({
+      message: "User successfully unfollowed",
+      user: currentUser,
     });
 
   } catch (e) {

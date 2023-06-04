@@ -12,6 +12,7 @@ import {
   followById as followUserById,
   getFollowedUsersById,
   applyToJobById,
+  unfollowById,
 } from '../controllers/user.controller.js';
 
 const router = Router({ mergeParams: true });
@@ -25,6 +26,7 @@ router.patch('/:id', verifyToken, updateUserById);
 router.delete('/:id', verifyToken, deleteUserById);
 
 router.post('/:id/following/:targetUserId/follow', verifyToken, followUserById);
+router.post('/:id/following/:targetUserId/unfollow', verifyToken, unfollowById);
 router.get('/:id/following', verifyToken, getFollowedUsersById);
 
 router.post('/:id/jobs/:jobId/apply', verifyToken, applyToJobById);
