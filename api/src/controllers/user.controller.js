@@ -31,7 +31,8 @@ export async function create(req, res) {
   try {
     await User.create(user);
     return res.status(200).send({
-      message: "Success"
+      message: "Success",
+      users : await User.findAll()
     });
   } catch(e) {
     log(e);
