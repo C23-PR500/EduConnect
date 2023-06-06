@@ -14,13 +14,13 @@ const Skill = db.skills;
 config();
 
 export async function create(req, res) {
-  if (!(req.body && req.body.email && req.body.password && req.body.name)) {
+  if (!(req.body && req.body.email && req.body.password && req.body.name )) {
     return res.status(400).send({
       message: "Email, password, or name can not be empty!"
     });
   }
 
-  const { email, password, name } = req.body;
+  const { email, password, name} = req.body;
 
   const user = {
     email: email.toLowerCase(),
@@ -28,11 +28,12 @@ export async function create(req, res) {
     name: name
   };
 
+  
   try {
-    await User.create(user);
+    const createdUser = await User.create(user);
     return res.status(200).send({
       message: "Success",
-      users : await User.findAll()
+      user: createdUser
     });
   } catch(e) {
     log(e);
@@ -60,7 +61,8 @@ export async function authenticate(req, res) {
             { id: user.id, email: user.email },
             process.env.TOKEN_KEY, 
             { expiresIn: "8h" }
-          )
+          ),
+          users : await User.findOne({ where: { id: user.id } })
       });
     }
 
