@@ -12,7 +12,9 @@ const init = (async () => {
   console.log('Starting . . .');
   config();
 
-  const PORT = process.env.PORT || 5000; 
+  const IS_DEV_ENVIRONMENT = process.env.ENV === 'dev';
+  const PORT = IS_DEV_ENVIRONMENT ? process.env.PORT : 8080; 
+
   const app = express();
   const router = express.Router();
 
@@ -32,11 +34,13 @@ const init = (async () => {
   app.listen(PORT, () => { console.log(`App listening on port ${PORT}!`) });
 
   await db.sequelize.query('SET FOREIGN_KEY_CHECKS = 0');
-  await db.sequelize.sync({ force: true });
+  await db.sequelize.sync({ force: IS_DEV_ENVIRONMENT });
   await db.sequelize.query('SET FOREIGN_KEY_CHECKS = 1');
   console.log('Database synchronised.');
 
-  await generateSkillData(db.skills);
-  await generateJobData(db.jobs, db.skills);
-
+  if (IS_DEV_ENVIRONMENT) {
+    await generateSkillData(db.skills);
+    await generateJobData(db.jobs, db.skills);
+  }
+  
 })();
