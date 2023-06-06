@@ -62,7 +62,7 @@ export async function authenticate(req, res) {
             process.env.TOKEN_KEY, 
             { expiresIn: "8h" }
           ),
-          users : await User.findOne({ where: { id: user.id } })
+          user: user
       });
     }
 
@@ -80,7 +80,6 @@ export async function authenticate(req, res) {
 
 export async function retrieveAll(req, res) {
   try {
-    console.log(req.user);
     return res.status(200).json({
         users: await User.findAll()
     });
@@ -118,7 +117,7 @@ export async function retrieveById(req, res) {
     })
 
   } catch(e) {
-    console.log(e);
+    log(e);
 
     return res.status(500).send({
       message:'Internal server error'
@@ -204,7 +203,7 @@ export async function updateById(req, res) {
     });
 
   } catch(e) {
-    console.log(e)
+    log(e)
 
     return res.status(500).send({
       message: "Internal server error"
@@ -238,7 +237,7 @@ export async function deleteById(req, res) {
 
 
   } catch(e) {
-    console.log(e)
+    log(e)
 
     return res.status(500).send({
       message: "Internal server error"
@@ -282,7 +281,7 @@ export async function followById(req, res) {
     });
 
   } catch (e) {
-    console.log(e);
+    log(e);
 
     return res.status(500).send({
       message: "Internal server error"
@@ -320,7 +319,7 @@ export async function getFollowedUsersById(req, res) {
       followedUsers
     });
   } catch (e) {
-    console.log(e);
+    log(e);
 
     return res.status(500).send({
       message: "Internal server error"
@@ -364,7 +363,7 @@ export async function applyToJobById(req, res) {
     });
 
   } catch (e) {
-    console.log(e);
+    log(e);
 
     return res.status(500).send({
       message: "Internal server error"
@@ -380,7 +379,7 @@ export async function unfollowById(req, res) {
       return res.status(401).send({
         message: 'Unauthorized'
       });
-    console.log(User)
+
     const targetUserId = req.params.targetUserId; // Assuming the target user's ID is passed as a URL parameter
 
     const currentUser = await User.findByPk(userId); // Assuming there is a model or function to retrieve a user by ID
@@ -408,7 +407,7 @@ export async function unfollowById(req, res) {
     });
 
   } catch (e) {
-    console.log(e);
+    log(e);
 
     return res.status(500).send({
       message: "Internal server error"
