@@ -3,6 +3,7 @@ import * as dotenv from 'dotenv';
 import * as fs from 'fs';
 import Config from './types/configs';
 import scrapeLinkedIn from './functions/scrapeLinkedIn';
+import scrapeLinkedInPeople from './functions/scrapePeopleLinkedin';
 
 dotenv.config();
 
@@ -24,7 +25,8 @@ const init = (async() => {
             `--user-data-dir=/tmp/user_data/`,
             `--start-maximized`] });
   
-  scrape(browser, config);
+  // Change this into scrapePeopleList to scrap people
+  scrapePeopleList(browser, config);
 });
 
 const scrape = async(browser: any, config: Config) => {
@@ -32,6 +34,14 @@ const scrape = async(browser: any, config: Config) => {
   outputStr += await scrapeLinkedIn(0, browser, config, process.env.LINKEDIN_USERNAME as string, process.env.LINKEDIN_PASSWORD as string);
 
   fs.writeFileSync(`tutor-ex.csv`, outputStr);
+};
+
+const scrapePeopleList = async(browser: any, config: Config) => {
+  //let outputStr = `personName, experiences, skills, degrees,city,area,country\n`;
+  let outputStr = ``;
+  outputStr += await scrapeLinkedInPeople(0, browser, config, process.env.LINKEDIN_USERNAME as string, process.env.LINKEDIN_PASSWORD as string);
+
+  fs.writeFileSync(`people-link.txt`, outputStr);
 };
 
 init();
