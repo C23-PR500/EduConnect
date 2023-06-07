@@ -10,6 +10,7 @@ import {
   updateById as updateUserById,
   deleteById as deleteUserById,
   followById as followUserById,
+  unfollowById as unfollowUserById,
   getFollowedUsersById,
   applyToJobById,
 } from '../controllers/user.controller.js';
@@ -25,6 +26,7 @@ router.patch('/:id', verifyToken, updateUserById);
 router.delete('/:id', verifyToken, deleteUserById);
 
 router.post('/:id/following/:targetUserId/follow', verifyToken, followUserById);
+router.post('/:id/following/:targetUserId/unfollow', verifyToken, unfollowUserById);
 router.get('/:id/following', verifyToken, getFollowedUsersById);
 
 router.post('/:id/jobs/:jobId/apply', verifyToken, applyToJobById);
