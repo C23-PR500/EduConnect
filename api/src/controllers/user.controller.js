@@ -152,7 +152,7 @@ export async function updateById(req, res) {
       })
 
      // Validate the user data
-     if (!userData.name || !userData.email || !userData.profession || !userData.city || !userData.area || !userData.country || !userData.password) {
+     if (!userData.name || !userData.email || !userData.profession || !userData.city || !userData.area || !userData.country) {
       return res.status(400).json({
         message: "All fields are required"
       });
@@ -160,7 +160,6 @@ export async function updateById(req, res) {
 
     user.name = userData.name;
     user.email = userData.email;
-    user.password = await bcrypt.hash(userData.password, 8);
     user.profession = userData.profession;
     user.city = userData.city;
     user.area = userData.area;
