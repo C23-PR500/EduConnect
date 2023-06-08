@@ -2,8 +2,9 @@ import Config from "../types/configs";
 import * as fs from 'fs';
 import * as readline from 'readline';
 
-const SCRAPE_AMOUNT = 50;
+const SCRAPE_AMOUNT = 25;
 const SCRAPE_BATCH = 30;
+const START_INDEX = 303;
 
 const LINKEDIN_LOGIN_PAGE = `https://linkedin.com/login`;
 const LINKEDIN_LOGIN_BUTTON = `.btn__primary--large.from__button--floating`;
@@ -11,7 +12,7 @@ const LINKEDIN_LOGIN_BUTTON = `.btn__primary--large.from__button--floating`;
 const LINKEDIN_PEOPLE_TITLE_LINK_CLASS = `ul.reusable-search__entity-result-list.list-style-none > li.reusable-search__result-container > div > div > div.entity-result__content.entity-result__divider.pt3.pb3.t-12.t-black--light > div.mb1 > div.t-roman.t-sans > div > span.entity-result__title-line.entity-result__title-line--2-lines > span > a`;
 const LINK_REGEX = /^[^?]+/;
 
-const LOCATION_CLASS = `div.ph5.pb5 > div.mt2.relative > div.pv-text-details__left-panel.mt2 > span.text-body-small.inline.t-black--light.break-words`;
+const LOCATION_CLASS = `div > div.mt2.relative > div.pv-text-details__left-panel.mt2 > span.text-body-small.inline.t-black--light.break-words`;
 const PERSON_NAME_CLASS = `div.ph5 > div.mt2.relative > div:nth-child(1) > div:nth-child(1) > h1`;
 
 const EXPERIENCES_TITLE_CLASS = `div.scaffold-finite-scroll__content > ul > li > div > div > div.display-flex.flex-column.full-width.align-self-center > div > div.display-flex.flex-column.full-width > div > span > span:nth-child(1)`;
@@ -95,7 +96,7 @@ const scrapePeopleIter = async(jobId: number, browser: any, page: any, config: C
   const newpage = await browser.newPage();
   await page.goto(config.urls.linkedin[jobId]);
 
-  const START_INDEX = 0;
+  
   for (let i = START_INDEX; i < SCRAPE_AMOUNT+START_INDEX; i++) {
     if(i >= profileLinks.length) {
       console.log("Stopped, end of profile");
@@ -110,9 +111,9 @@ const scrapePeopleIter = async(jobId: number, browser: any, page: any, config: C
     let personArea: string = '';
     let personCountry: string = '';
 
+    console.log("Index scraped: ", i);
     try {
       await page.goto(profileLinks[i]);
-      console.log("Index scraped: ", i);
       // person name
       personName = await raceFunction(page, PERSON_NAME_CLASS, false, ``);
     } catch(e) {
