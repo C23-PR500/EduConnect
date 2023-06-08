@@ -25,7 +25,7 @@ const init = (async() => {
             `--user-data-dir=/tmp/user_data/`,
             `--start-maximized`] });
   
-  // Change this into scrapePeopleList to scrap people
+  // Change this into scrapePeopleList to scrap people profile link or people datas
   scrapePeopleList(browser, config);
 });
 
@@ -37,11 +37,11 @@ const scrape = async(browser: any, config: Config) => {
 };
 
 const scrapePeopleList = async(browser: any, config: Config) => {
-  //let outputStr = `personName, experiences, skills, degrees,city,area,country\n`;
-  let outputStr = ``;
+  let outputStr = `personName, experiences, skills, city, area, country\n`;
+  //let outputStr = ``;
   outputStr += await scrapeLinkedInPeople(0, browser, config, process.env.LINKEDIN_USERNAME as string, process.env.LINKEDIN_PASSWORD as string);
 
-  fs.writeFileSync(`people-link.txt`, outputStr);
+  fs.writeFileSync(`people.csv`, outputStr);
 };
 
 init();
