@@ -1,3 +1,4 @@
+
 export default (sequelize, Sequelize) => {
   const User = sequelize.define("user", {
     id: {
