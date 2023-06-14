@@ -4,6 +4,8 @@ import { Sequelize } from 'sequelize';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { config } from 'dotenv';
+import * as fs from 'fs';
+import crypto from 'crypto';
 
 const Op = Sequelize.Op;
 const User = db.users;
@@ -410,6 +412,80 @@ export async function unfollowById(req, res) {
 
     return res.status(500).send({
       message: "Internal server error"
+    });
+  }
+};
+
+export async function predictJobsByUserId(req, res) {
+  try {
+    const userId = req.params.id;
+
+    if (userId != req.user.id)
+      return res.status(401).send({
+        message: 'Unauthorized'
+      });
+
+    const user = await User.findByPk(userId, { 
+      include: [
+        {
+          model: Skill,
+          as: 'skills',
+          through: { attributes: [] }, 
+        },
+      ]
+    });
+
+    if (!user.name || !user.city || !user.area || !user.country)
+      return res.status(406).send({
+        message: 'All required fields cannot be empty!'
+      });
+
+    const allJobs = await Job.findAll({
+      include: [
+        {
+          model: Skill,
+          as: 'skills',
+          through: { attributes: [] }, 
+        },
+      ],
+    });
+
+    const transactionUuid = crypto.randomUUID();
+
+    const processedUser = {
+      name: user.name,
+      city: user.city,
+      area: user.area,
+      country: user.country,
+      skills: user.skills,
+    };
+
+    const processedAllJobs = allJobs.map((job) => {
+      return {
+        name: job.name,
+        companyName: job.companyName,
+        level: job.level,
+        city: job.city,
+        area: job.area,
+        country: job.country,
+        skills: job.skills,
+      };
+    });
+
+    fs.writeFileSync(`data/user-${transactionUuid}.json`, JSON.stringify(processedUser));
+    fs.writeFileSync(`data/jobs-${transactionUuid}.json`, JSON.stringify(processedAllJobs));
+
+    return res.status(200).json({});
+
+    // return res.status(200).json({
+    //   applicants
+    // });
+
+  } catch(e) {
+    log(e);
+
+    return res.status(500).send({
+      message:'Internal server error'
     });
   }
 };

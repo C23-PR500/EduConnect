@@ -13,6 +13,7 @@ import {
   unfollowById as unfollowUserById,
   getFollowedUsersById,
   applyToJobById,
+  predictJobsByUserId,
 } from '../controllers/user.controller.js';
 
 const router = Router({ mergeParams: true });
@@ -30,5 +31,6 @@ router.post('/:id/following/:targetUserId/unfollow', verifyToken, unfollowUserBy
 router.get('/:id/following', verifyToken, getFollowedUsersById);
 
 router.post('/:id/jobs/:jobId/apply', verifyToken, applyToJobById);
+router.get('/:id/jobs/predict', verifyToken, predictJobsByUserId);
 
 export default router;
