@@ -4,6 +4,8 @@ import string
 # from https://www.kaggle.com/code/mfaaris/hybrid-and-tensorflow-recommender-system
 def separate(text):
     clean_text = []
+    if type(text) != str:
+        text = str(text)
     for t in text.split(','):
         cleaned = re.sub('\(.*\)', '', t) # Remove text inside parentheses
         cleaned = cleaned.translate(str.maketrans('','', string.digits))

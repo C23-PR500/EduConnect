@@ -167,23 +167,32 @@ export async function updateById(req, res) {
     user.area = userData.area;
     user.country = userData.country;
 
-    //validasi if(!userData.name) { return error}
-
      // Update user skills
     if (userData.skills && Array.isArray(userData.skills)) {
       // Remove existing user skills
       await user.setSkills([]);
 
-      let skillInstanceList = [];
+      userData.skills = userData.skills.map((skill) => {
+        return skill.split(' ')
+          .map(w => w[0].toUpperCase() + w.substring(1).toLowerCase())
+          .join(' ');
+      });
+
+      let uncreatedSkills = [];
 
       for (const skill of userData.skills) {
         const skillInstance = await Skill.findOne({ where: { name: skill } });
 
-        if (skillInstance)
-          skillInstanceList.push(skillInstance);
+        if (!skillInstance)
+          uncreatedSkills.push({ name: skill });
       }
 
-      await user.setSkills(skillInstanceList);
+      if (uncreatedSkills)
+        await Skill.bulkCreate(uncreatedSkills);
+      
+      const skillInstances = await Skill.findAll({ where: { name: userData.skills } });
+
+      await user.setSkills(skillInstances);
     }
 
     await user.save();
