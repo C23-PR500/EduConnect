@@ -6,6 +6,7 @@ import jwt from 'jsonwebtoken';
 import { config } from 'dotenv';
 import * as fs from 'fs';
 import crypto from 'crypto';
+import { spawnSync } from 'child_process';
 
 const Op = Sequelize.Op;
 const User = db.users;
@@ -171,7 +172,8 @@ export async function updateById(req, res) {
     if (userData.skills && Array.isArray(userData.skills)) {
       // Remove existing user skills
       await user.setSkills([]);
-
+      
+      // Title case each skill
       userData.skills = userData.skills.map((skill) => {
         return skill.split(' ')
           .map(w => w[0].toUpperCase() + w.substring(1).toLowerCase())
@@ -466,7 +468,7 @@ export async function predictJobsByUserId(req, res) {
       city: user.city,
       area: user.area,
       country: user.country,
-      skills: user.skills,
+      skills: user.skills.map((skill) => skill.name),
     };
 
     const processedAllJobs = allJobs.map((job) => {
@@ -477,14 +479,42 @@ export async function predictJobsByUserId(req, res) {
         city: job.city,
         area: job.area,
         country: job.country,
-        skills: job.skills,
+        skills: job.skills.map((skill) => skill.name),
       };
     });
 
-    fs.writeFileSync(`data/user-${transactionUuid}.json`, JSON.stringify(processedUser));
-    fs.writeFileSync(`data/jobs-${transactionUuid}.json`, JSON.stringify(processedAllJobs));
+    fs.writeFileSync(`recommender/data/user-${transactionUuid}.json`, JSON.stringify(processedUser));
+    fs.writeFileSync(`recommender/data/jobs-${transactionUuid}.json`, JSON.stringify(processedAllJobs));
+    
+    const args = [transactionUuid]; // Command-line arguments for the Python script
+    const pythonScript = 'recommender/main.py'; // Path to the Python script
+  
+    const pythonSubprocess = spawnSync("python3", [pythonScript, ...args], { encoding : 'utf8' });
 
-    return res.status(200).json({});
+    if (pythonSubprocess.error) {
+        throw new Error(pythonSubprocess.stderr);
+    }
+
+    const rawPrediction = pythonSubprocess.stdout;
+    const rawPredictionList = rawPrediction.split('+++');
+
+    let finalPredictions = [];
+
+    for (const singularRawPrediction of rawPredictionList) {
+      const singularRawPredictionTokens = singularRawPrediction.split(';;;');
+      const predictionJobName = singularRawPredictionTokens[0];
+      const predictionJobCompanyName = singularRawPredictionTokens[1];
+
+      const predictionJob = await Job.findOne({ where: { 
+        name: predictionJobName,
+        companyName: predictionJobCompanyName,
+      } });
+
+      if (predictionJob)
+        finalPredictions.push(predictionJob);
+    }
+
+    return res.status(200).json({ prediction: finalPredictions });
 
     // return res.status(200).json({
     //   applicants

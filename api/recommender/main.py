@@ -1,3 +1,7 @@
+import json
+import sys
+import os
+
 '''
 user: string (name)
 
@@ -49,22 +53,33 @@ def predict_job(user, jobs_list, users_list, n = 10):
     similar_jobs_id_list = similar_jobs_df.index.tolist()
     return similar_jobs_id_list
 
-users_list = [{
-    "name": "John Doe2",
-    "city": "Semarang",
-    "area": "Central Java",
-    "country": "Indonesia",
-    "skills": ["Teaching","Mentoring"]
-}]
-
-jobs_list = [{
-    "name": "Teacher",
-    "companyName": "KenzieTech International Corporation",
-    "level": "Associate",
-    "city": "Semarang",
-    "area": "Central Java",
-    "country": "Indonesia",
-    "skills": ["Teaching","Mentoring"]
-}]
-
-print(predict_job("John Doe2", jobs_list, users_list, 5))
+def main():
+    if len(sys.argv) < 2:
+        print("Provide the transaction UUID.")
+        return
+    try:
+        transaction_uuid = sys.argv[1]
+        # Only to be run via the Node app. If to be run as a standalone Python script, replace recommender/data to data
+        user_file_path = f"recommender/data/user-{transaction_uuid}.json"
+        jobs_list_file_path = f"recommender/data/jobs-{transaction_uuid}.json"
+        
+        user_file = open(user_file_path, "r")
+        user = json.loads(user_file.read())
+        user_file.close()
+        
+        jobs_list_file = open(jobs_list_file_path, "r")
+        jobs_list = json.loads(jobs_list_file.read())
+        jobs_list_file.close()
+        
+        print("+++".join(predict_job(user["name"], jobs_list, [user])))
+        
+        if os.path.exists(user_file_path):
+            os.remove(user_file_path)
+        if os.path.exists(jobs_list_file_path):
+            os.remove(jobs_list_file_path)
+        
+    except Exception as e:
+        print(f"An error has occurred: {str(e)}")
+        
+if __name__ == "__main__":
+    exit(main())
