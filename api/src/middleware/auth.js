@@ -10,7 +10,9 @@ const verifyToken = async (req, res, next) => {
   const token = req.headers.authorization;
 
   if (!token || token.split(' ').length !== 2 || token.split(' ')[0] !== `Bearer`) {
-    return res.status(403).send(`A token is required for authentication`);
+    return res.status(403).send({
+      message: "A token is required for authentication"
+    });
   }
 
   const jwtToken = token.split(' ')[1];
@@ -21,12 +23,16 @@ const verifyToken = async (req, res, next) => {
     const user = await User.findOne({ where: { id: decoded.id, email: decoded.email } });
 
     if (!user)
-      return res.status(401).send("Invalid Token");
+      return res.status(401).send({
+        message: "Invalid token"
+      });
 
     req.user = decoded;
   } catch (err) {
     console.log(err);
-    return res.status(401).send("Invalid Token");
+    return res.status(401).send({
+      message: "Invalid token"
+    });
   }
 
   return next();
