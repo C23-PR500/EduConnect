@@ -18,3 +18,15 @@ You can then access it on port 3000.
 ```sh
 curl http://localhost:3000/api/v1/users/login
 ```
+
+## Deployment
+For deployment purposes, you can build and run the Docker image with the following commands.
+```sh
+docker build . -t educonnect-api
+docker run -p 8080:8080 educonnect-api
+```
+
+For deployment with Google Cloud Run, use the following commands.
+```sh
+
+```
