@@ -1,7 +1,7 @@
-export const HOST = "34.101.58.162";
-export const USER = "root";
-export const PASSWORD = "8p&pvxtDnTN5E>{a";
-export const DB = "educonnect";
+export const HOST = ""; // TODO: Fill with db host
+export const USER = ""; // TODO: Fill with db user
+export const PASSWORD = ""; // TODO: Fill with db password
+export const DB = ""; // TODO: Fill with db name
 export const dialect = "mysql";
 export const pool = {
   max: 5,

@@ -7,7 +7,7 @@ To run this API, ensure that you have installed the required modules
 npm i
 ```
 
-Then, you can run the API with the following command.
+You need to also specify the database connection on the file `src/config/database.config.js`. Then, you can run the API with the following command.
 
 ```sh
 npm run start
@@ -28,5 +28,6 @@ docker run -p 8080:8080 educonnect-api
 
 For deployment with Google Cloud Run, use the following commands.
 ```sh
-
+gcloud builds submit --tag gcr.io/$GOOGLE_CLOUD_PROJECT/educonnect-api
+gcloud run deploy educonnect-api --image gcr.io/$GOOGLE_CLOUD_PROJECT/educonnect-api --platform managed --region asia-southeast2 --max-instances=1
 ```
