@@ -7,7 +7,7 @@ To run this API, ensure that you have installed the required modules
 npm i
 ```
 
-You need to also specify the database connection on the file `src/config/database.config.js`. Then, you can run the API with the following command.
+You need to also specify the database connection on the file `src/config/database.config.js`. Set the environment to `dev` for development purposes by editing the `ENV` variable on the `.env` file. Then, you can run the API with the following command.
 
 ```sh
 npm run start
