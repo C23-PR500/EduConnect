@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.friendDetail.FriendDetailActivity">
+
+    <LinearLayout
+        android:id="@+id/ll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="18dp"
+            android:layout_marginTop="37dp"
+            android:layout_marginBottom="29dp"
+            android:text="@string/your_profile"
+            android:textColor="@color/black"
+            android:fontFamily="@font/inter_bold"
+            android:textAlignment="center"
+            android:textSize="24sp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/et_bg"
+            android:layout_marginTop="5dp"
+            android:layout_marginHorizontal="28dp"
+            android:padding="16dp"
+            android:orientation="vertical">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/civ_avatar"
+                android:layout_width="153dp"
+                android:layout_height="153dp"
+                android:src="@drawable/outline_account_circle_24"
+                android:layout_gravity="center_horizontal"/>
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/name_heri_susanto"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:layout_marginTop="28dp"/>
+
+            <TextView
+                android:id="@+id/tv_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/email_herisusanto_gmail_com"
+                android:textSize="15sp"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/tv_profession"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/profession_dosen_akuntansi"
+                android:textSize="15sp"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/tv_city"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/city_depok"
+                android:textSize="15sp"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/tv_area"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/area_jawa_barat"
+                android:textSize="15sp"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/tv_country"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/country_indonesia"
+                android:textSize="15sp"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/tv_skill"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/skill_mathematics"
+                android:textSize="15sp"
+                android:textColor="@color/black"/>
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="95dp"
+            android:minHeight="32dp"
+            android:layout_marginTop="24dp"
+            android:text="@string/edit_profile"
+            android:textSize="24sp"
+            android:layout_gravity="center_horizontal"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minWidth="95dp"
+            android:minHeight="32dp"
+            android:layout_marginTop="15dp"
+            android:text="@string/back_to_home"
+            android:textSize="24sp"
+            android:layout_gravity="center_horizontal"/>
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/pb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"/>
+</FrameLayout>

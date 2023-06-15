@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".view.jobs.JobsActivity">
+
+    <EditText
+        android:id="@+id/et_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/et_bg"
+        android:padding="16dp"
+        android:hint="@string/search_for_jobs"
+        android:drawableStart="@drawable/baseline_search_24"
+        android:drawablePadding="8dp"
+        android:layout_marginHorizontal="19dp"
+        android:layout_marginTop="36dp"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_my_job_recommendation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="27dp"
+        android:minHeight="34dp"
+        android:text="@string/my_job_recommendation"
+        android:layout_gravity="center"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_jobs"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="20dp"
+        android:layout_marginHorizontal="30dp"
+        android:visibility="gone"
+        tools:listitem="@layout/list_item_jobs" />
+
+    <ProgressBar
+        android:id="@+id/pb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="visible"/>
+</LinearLayout>

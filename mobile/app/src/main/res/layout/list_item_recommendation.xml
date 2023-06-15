@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_marginVertical="20dp">
+
+    <TextView
+        android:id="@+id/recommendation_place"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:fontFamily="@font/inter_bold"
+        android:textSize="16sp"
+        tools:text="Sekolah"/>
+
+    <TextView
+        android:id="@+id/recommendation_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:text="@string/job_guru_fisika"
+        android:layout_marginVertical="4dp"/>
+
+    <TextView
+        android:id="@+id/recommendation_location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:text="@string/city_depok"/>
+</LinearLayout>
