@@ -11,7 +11,7 @@ We are capstone project team C23-PR500 from Bangkit Academy Batch 1 of 2023, whi
 * Kenzie Kyle Anderson - Mobile Development (A181DKX4437)
 
 ## Specifications
-There are three main subdirectories of this repository.
+There are three main subdirectories of this repository. Information regarding using the API is provided on the README of the API directory.
 * `api/` - This is the directory for the REST API service that we use as the backend of our mobile application. Our ML model trained on the collected dataset is also present as a Python module in the `recommender/` directory. 
 * `scraper/` - This is the directory for the scraper scripts that we created and used for the dataset collection process, and the scraping results. 
-* `mobile` - This is the directory for the source code of the mobile app.
+* `mobile/` - This is the directory for the source code of the mobile app.
