@@ -31,3 +31,9 @@ For deployment with Google Cloud Run, use the following commands.
 gcloud builds submit --tag gcr.io/$GOOGLE_CLOUD_PROJECT/educonnect-api
 gcloud run deploy educonnect-api --image gcr.io/$GOOGLE_CLOUD_PROJECT/educonnect-api --platform managed --region asia-southeast2 --max-instances=1
 ```
+
+# Recommender
+## Usage
+To run the recommender or to modify, use the main function `predict_job(user, jobs_list, users_list, n)` in `recommender/main.py` where `user` is the user name, `jobs_list` is the list of dictionaries of the jobs data, `users_list` is the list of dictionaries of the users data, and `n` is the number of intended returned jobs recommendation. The output of this function is the list of strings of recommended jobs with format for each string is `<job name>;;;<job company name>`.
+
+To use only the output, list of recommended jobs, which in JSON format, just run the `main.py` and make sure to connect to your API first.
